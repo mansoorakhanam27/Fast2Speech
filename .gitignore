@@ -1,0 +1,21 @@
+# Licensed raw speech and derived manifests must remain local.
+/data/
+/Technical_Report.pdf
+/Report/preview-*.png
+/Report/checked-*.png
+
+# Python cache and machine-local runtime data.
+.venv/
+__pycache__/
+*.py[cod]
+*.tmp
+
+# The reference vocoder archive is vendored; the trainer extracts this file.
+/FastSpeech2/hifigan/generator_*.pth.tar
+/FastSpeech2/preprocessed_data/
+/FastSpeech2/demo/
+
+# MFA and Python build artifacts.
+*.TextGrid
+*.log
+*.egg-info/

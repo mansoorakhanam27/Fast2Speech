@@ -1,0 +1,10 @@
+"""Train the Telugu FastSpeech 2 model using the shared reference bridge."""
+
+from pathlib import Path
+import runpy
+import sys
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+sys.argv = [str(ROOT / "tools" / "run_reference_training.py"), "--config", str(Path(__file__).with_name("config.yaml")), *sys.argv[1:]]
+runpy.run_path(str(ROOT / "tools" / "run_reference_training.py"), run_name="__main__")

@@ -1,0 +1,61 @@
+# Working configuration for the Telugu FastSpeech 2 experiment.
+# The indicated IndicTTS mirror must be checked against audio language labels
+# and duration before training; its current dataset card contains a conflicting note.
+language: te
+dataset:
+  name: IndicTTS_Telugu
+  manifest: ../data/IndicTTS_Telugu/manifest.jsonl
+  audio_root: ../data/IndicTTS_Telugu
+  target_train_hours: 5.0
+  target_validation_hours: 1.0
+  duration_tolerance_minutes: 5.0
+  split_seed: 42
+  train_manifest: ../data/IndicTTS_Telugu/splits/train.jsonl
+  validation_manifest: ../data/IndicTTS_Telugu/splits/validation.jsonl
+text:
+  representation: phoneme
+  unicode_form: NFC
+  cleaner: telugu_cleaners
+  phonemizer: espeak-ng
+  language_code: te
+  aligner: montreal_forced_aligner
+  dictionary: ../data/IndicTTS_Telugu/mfa/telugu.dict
+  acoustic_model: ../data/IndicTTS_Telugu/mfa/telugu_acoustic_model.zip
+  # The dictionary/acoustic model are a required Telugu-specific adaptation.
+  # Do not treat English ARPAbet or Mandarin pinyin symbols as Telugu phones.
+audio:
+  sample_rate: 22050
+  max_wav_value: 32768.0
+  n_fft: 1024
+  hop_length: 256
+  win_length: 1024
+  n_mels: 80
+  mel_fmin: 0
+  mel_fmax: 8000
+variance:
+  feature_level: phoneme_level
+  normalize_pitch: true
+  normalize_energy: true
+model:
+  encoder_layers: 4
+  encoder_heads: 2
+  encoder_hidden: 256
+  decoder_layers: 4
+  decoder_heads: 2
+  decoder_hidden: 256
+  variance_predictor_hidden: 128
+  dropout: 0.1
+  multi_speaker: true
+  vocoder: HiFi-GAN
+training:
+  batch_size: 2
+  gradient_accumulation_steps: 4
+  max_steps: 30000
+  validation_interval: 500
+  checkpoint_interval: 2000
+  seed: 42
+  device: auto
+paths:
+  preprocessed: ../data/IndicTTS_Telugu/preprocessed
+  checkpoints: checkpoints
+  results: ../Results/Telugu

@@ -33,7 +33,7 @@ def footer(canvas, doc):
     canvas.line(doc.leftMargin, 0.58 * inch, w - doc.rightMargin, 0.58 * inch)
     canvas.setFont("Helvetica", 8)
     canvas.setFillColor(colors.HexColor("#657587"))
-    canvas.drawString(doc.leftMargin, 0.38 * inch, "FastSpeech 2 | Technical progress report | 7 November 2026")
+    canvas.drawString(doc.leftMargin, 0.38 * inch, "FastSpeech 2 | Technical progress report | 8 November 2026")
     canvas.drawRightString(w - doc.rightMargin, 0.38 * inch, f"Page {doc.page}")
     canvas.restoreState()
 
@@ -42,9 +42,9 @@ story = [
     Spacer(1, 0.45 * inch),
     P("FastSpeech 2", "CoverTitle"),
     P("English and Telugu Assignment - Technical Progress Report", "Deck"),
-    P("Status as of 7 November 2026", "Deck"),
+    P("Status as of 8 November 2026", "Deck"),
     P("Executive summary", "Section"),
-    P("This report documents completed, reproducible work and the current blockers. It is a progress report, not a claim that the assignment is complete. The English Svarah corpus was accessed, exported locally, and audited into duration-targeted train and validation splits. Telugu data have not been obtained or validated. Neither language has completed forced alignment, acoustic feature extraction, model training, or inference; therefore no model quality, loss curves, generated speech, or variance plots are reported.", "Body2"),
+    P("This report documents completed, reproducible work and the current blockers. It is a progress report, not a claim that the assignment is complete. The English Svarah corpus was accessed, exported locally, and audited into duration-targeted train and validation splits. Telugu data have not been obtained or validated. English preparation and forced alignment have now been run, but several utterances failed alignment and English feature extraction/training has not completed. Telugu data are unavailable in this workspace. No checkpoint-backed speech, measured training curves, or variance-adaptor plots are available; none are fabricated here.", "Body2"),
     P("Verified English data", "Section"),
 ]
 
@@ -72,17 +72,17 @@ story += [t, Spacer(1, 8), P("The audit is recorded in <font name='Courier'>data
 story += [
     P("Implementation and reproducibility", "Section"),
     P("The repository vendors the MIT-licensed ming024/FastSpeech2 reference implementation at commit d4e79eb52e8b01d24703b2dfc0385544092958f3. Language-specific configuration and wrapper scripts, a dataset exporter, and a deterministic duration-based manifest audit are present. The English split uses seed 42. The audit checks audio durations, duplicate IDs, missing files/transcripts, target duration, and train/validation ID overlap.", "Body2"),
-    P("Environment checks found PyTorch 2.14.1+cpu with CUDA unavailable. The English preprocessing attempt did not reach audio preparation: initially required runtime dependencies were missing, and a subsequent attempt was stopped after it remained without visible progress. Montreal Forced Aligner (MFA) is not installed. No TextGrid alignments or acoustic features were produced. Some Python dependencies were installed into the project-local .venv; the system-wide Python environment was not intentionally modified.", "Body2"),
+    P("The project-local Python environment reports PyTorch 2.14.1+cpu and no CUDA device. English audio was normalized to mono 22.05 kHz PCM16, transcripts were normalized for the configured English cleaner, a corpus-specific 6,456-word G2P lexicon was generated, and the official English US ARPA MFA acoustic model was used. Alignment produced 3,367 of 3,429 training TextGrids and 667 of 686 validation TextGrids. The missing training items total about 8.8 minutes, leaving about 4.85 aligned hours and outside the five-minute duration tolerance; validation retains about 57.8 aligned minutes. Alignment failures require investigation or a documented replacement split before feature extraction can complete. MFA validation was skipped because its temporary training pass was too slow. No model training or inference has completed.", "Body2"),
     P("Assignment status", "Section"),
 ]
 status = [
     [P("Requirement", "CellHead"), P("Status", "Cell"), P("Evidence / remaining work", "CellHead")],
     [P("English corpus and 5 h / 1 h split", "Cell"), P("Complete", "Cell"), P("Verified Svarah export and disjoint split audit.", "Cell")],
     [P("Telugu corpus and split", "Cell"), P("Not started", "Cell"), P("A public mirror has conflicting language metadata; original IIT Madras access/license process remains unresolved. Do not assume the mirror is Telugu.", "Cell")],
-    [P("Text normalization, lexicon, forced alignment", "Cell"), P("Not complete", "Cell"), P("Requires working language-specific frontend and MFA; Telugu pronunciation resources need validation.", "Cell")],
+    [P("English normalization, lexicon, forced alignment", "Cell"), P("Partial", "Cell"), P("English MFA TextGrids exist, but 62 train and 19 validation utterances failed; train aligned duration is outside tolerance. Telugu resources remain unvalidated.", "Cell")],
     [P("FastSpeech 2 training and checkpoints", "Cell"), P("Not started", "Cell"), P("Train separate language models; record configuration, hardware, and actual training/validation losses.", "Cell")],
     [P("Inference, five test cases per language, plots", "Cell"), P("Not started", "Cell"), P("Requires trained checkpoints; preserve assignment test strings exactly and render duration, pitch, and energy plots.", "Cell")],
-    [P("Final technical report and public repository", "Cell"), P("Not complete", "Cell"), P("This progress report is not the final report. The workspace has no configured Git remote or public repository URL.", "Cell")],
+    [P("Progress report and public repository", "Cell"), P("Available", "Cell"), P("This progress report is not a final experimental report. Public code repository: https://github.com/mansoorakhanam27/Fast2Speech. Local audio, environments, credentials, and checkpoints are excluded.", "Cell")],
 ]
 st = Table(status, colWidths=[1.55 * inch, 0.92 * inch, 4.03 * inch], repeatRows=1, hAlign="LEFT")
 st.setStyle(TableStyle([
@@ -97,18 +97,18 @@ story += [st, PageBreak()]
 
 story += [
     P("Next steps", "Section"),
-    P("1. Obtain the original Telugu corpus through an authorized route, review its license, and verify transcript language, audio, speakers, and duration before export. 2. Install and validate MFA and language-specific pronunciation resources. 3. Run preprocessing and forced alignment for each language, manually inspect alignment samples, and extract mel, pitch, energy, and duration targets. 4. Train both models on a CUDA-capable machine, preserving logs and checkpoints. 5. Synthesize the exact assignment test sentences, generate the required plots, and complete the final report from measured results. 6. Create and verify a public GitHub repository containing code and documentation only; do not publish restricted audio or credentials.", "Body2"),
+    P("1. Obtain the original Telugu corpus through an authorized route, review its license, and verify transcript language, audio, speakers, and duration before export. 2. Install and validate MFA and language-specific pronunciation resources. 3. Run preprocessing and forced alignment for each language, manually inspect alignment samples, and extract mel, pitch, energy, and duration targets. 4. Train both models on a CUDA-capable machine, preserving logs and checkpoints. 5. Synthesize the exact assignment test sentences, generate the required plots, and complete the final report from measured results. 6. Update the existing public GitHub repository with the final verified code and report; do not publish restricted audio or credentials.", "Body2"),
     P("Reproduce the completed split audit", "Section"),
     P("From the project root in PowerShell:", "Body2"),
     P("python tools\\audit_manifests.py --manifest data\\Svarah\\manifest.jsonl --audio-root data\\Svarah --output-dir data\\Svarah\\splits --language English", "Small"),
-    P("The workspace is local at <font name='Courier'>C:\\Users\\manso\\OneDrive\\Documents\\ChatGPT\\Fast2Speech</font>. Git currently has no remote configured, so there is no public repository link to provide yet.", "Body2"),
+    P("The workspace is local at <font name='Courier'>C:\\Users\\manso\\OneDrive\\Documents\\ChatGPT\\Fast2Speech</font>. Public repository: https://github.com/mansoorakhanam27/Fast2Speech. Raw dataset audio, credentials, and local environments are excluded.", "Body2"),
     P("References", "Section"),
     P("1. FastSpeech 2 assignment handout supplied by the student, <i>FastSpeech2_Assignment.pdf</i>.", "Small"),
     P("2. ming024/FastSpeech2 reference implementation, commit d4e79eb52e8b01d24703b2dfc0385544092958f3. The upstream README reports under 10,000 steps (under one hour on a GTX 1080 Ti) to generate acceptable-quality samples; this is not a runtime guarantee for this project or its configurations. <link href='https://github.com/ming024/FastSpeech2' color='#176B96'>github.com/ming024/FastSpeech2</link>.", "Small"),
     P("3. AI4Bharat, Svarah dataset card and terms. <link href='https://huggingface.co/datasets/ai4bharat/Svarah' color='#176B96'>huggingface.co/datasets/ai4bharat/Svarah</link>.", "Small"),
     P("4. SPRINGLab IndicTTS Telugu dataset card. Its description includes conflicting language information; use only after verification. <link href='https://huggingface.co/datasets/SPRINGLab/IndicTTS_Telugu' color='#176B96'>huggingface.co/datasets/SPRINGLab/IndicTTS_Telugu</link>.", "Small"),
     Spacer(1, 10),
-    P("Limitations: This report records project status and a dataset split audit only. The audit does not prove transcript accuracy or alignment. No model metrics or generated outputs exist yet.", "Small"),
+    P("Limitations: This is a technical progress report, not a completed assignment report. Alignment success does not prove transcript correctness or manually verified phone boundaries. There are no trained checkpoints, model metrics, or generated samples yet.", "Small"),
 ]
 
 OUT.parent.mkdir(parents=True, exist_ok=True)

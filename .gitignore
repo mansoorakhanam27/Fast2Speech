@@ -6,6 +6,7 @@
 
 # Python cache and machine-local runtime data.
 .venv/
+.mfa_env/
 __pycache__/
 *.py[cod]
 *.tmp

@@ -27,10 +27,9 @@ Public repository: https://github.com/mansoorakhanam27/Fast2Speech
   its mirror contains Hindi); do not train on it until the language is verified.
   The original IIT Madras IndicTTS license and request process also remain to be
   reviewed and completed.
-- A technical progress report is available at `Report/Technical_Report.pdf`.
-  Forced alignment, model training, inference, loss/variance plots, and the final
-  technical report have not been completed. No model checkpoints or experimental
-  findings are claimed.
+- The English preprocessing pipeline produced 3,367/3,429 training and 667/686 validation TextGrids with the English US ARPA MFA model. The missing training clips account for about 8.8 minutes, leaving about 4.85 aligned hours, outside the assignment's five-minute tolerance; do not treat English feature preparation as complete. MFA's temporary validation training pass was skipped.
+- Telugu processing, model training, inference, checkpoints, loss plots, generated test audio, and variance-adaptor plots are not complete. The local environment is CPU-only, and no training results are claimed.
+- A technical progress report is available at `Report/Technical_Report.pdf`. The report distinguishes completed work from outstanding requirements.
 
 ## Dataset preparation
 
@@ -73,8 +72,8 @@ Inspect `audit.json` and the emitted split manifests before forced alignment.
 
 Svarah is a multi-speaker Indian-accented English corpus with read and
 spontaneous speech. The exported set's measured duration and speaker labels
-are recorded above. Transcript correctness and forced alignment have not been
-verified. Access to the Hugging Face files requires accepting the dataset
+are recorded above. Transcript correctness and phone-boundary quality have not been manually
+verified; forced alignment was run with partial coverage as reported above. Access to the Hugging Face files requires accepting the dataset
 conditions; the dataset card identifies CC BY 4.0.
 
 IndicTTS is distributed under the IIT Madras IndicTTS license terms. The
@@ -126,6 +125,7 @@ README.md
 ```
 
 Loss plots, generated test audio, variance-adaptor plots, and the final report
-must be added only after actual training and inference. Large checkpoints should
+must be added only after actual training and inference. The current PDF is a
+progress report and explicitly lists incomplete requirements. Large checkpoints should
 use Git LFS or a stable external download link; do not commit data licensed for
 restricted use.
